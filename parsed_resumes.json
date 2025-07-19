@@ -1,0 +1,118 @@
+[
+  {
+    "full_name": "Candace R Alexander",
+    "email": "ouiq.hbrt@eqjof.org",
+    "phone_number": "7574152274",
+    "skills": [
+      "Animal Handle Injured",
+      "Feed Formula",
+      "Release Prep",
+      "Volunteer Guide"
+    ],
+    "education": [
+      {
+        "degree": "Certificate - CLERICAL OFFICE MGT",
+        "institution": "MIDWEST CAREER INST",
+        "start_date": null,
+        "end_date": null
+      },
+      {
+        "degree": "Other - NETWORKING",
+        "institution": "HENRY FORD COMMUNITY",
+        "start_date": null,
+        "end_date": null
+      }
+    ],
+    "work_experience": [
+      {
+        "position": "Wildlife Rehabilitator Assistant",
+        "company": "WildCare Nature Center",
+        "start_date": "Dec 2021",
+        "end_date": "Jan 2023"
+      }
+    ],
+    "certifications": [],
+    "timestamp": "2025-07-19T11:55:52.303200",
+    "filename": "CANDACE_R_ALEXANDER_32816.pdf"
+  },
+  {
+    "full_name": "CIERRA M VASQUEZ",
+    "email": "uuiz.mrev@ypzf.org",
+    "phone_number": "9349536078",
+    "skills": [
+      "Angular",
+      "Frontend Framework",
+      "Git",
+      "HTML CSS JavaScript",
+      "React",
+      "Version Control"
+    ],
+    "education": [
+      {
+        "degree": "Certificate - BUSINESS",
+        "institution": "DORSEY BUSINESS SCHOOL",
+        "start_date": null,
+        "end_date": null
+      }
+    ],
+    "work_experience": [
+      {
+        "position": "Frontend Developer",
+        "company": "Pixel Perfect Interfaces",
+        "start_date": "Jul 2021",
+        "end_date": "May 2023"
+      }
+    ],
+    "certifications": [],
+    "timestamp": "2025-07-19T13:41:54.997778",
+    "filename": "CIERRA_M_VASQUEZ_32263.pdf"
+  },
+  {
+    "full_name": "Nishant Jaiswal",
+    "email": "Nishantjais541@gmail.com",
+    "phone_number": "9807884171",
+    "skills": [
+      "Python",
+      "TensorFlow",
+      "MERN",
+      "NumPy",
+      "ScikitLearn"
+    ],
+    "education": [
+      {
+        "degree": "Bachelor’s (Hons). Computer Science",
+        "institution": "Herald College Kathmandu",
+        "start_date": "Sep 2023",
+        "end_date": "Present"
+      },
+      {
+        "degree": "High School – Computer Science",
+        "institution": "Kathmandu Model College",
+        "start_date": "Mar 2021",
+        "end_date": "Dec 2023"
+      }
+    ],
+    "work_experience": [
+      {
+        "position": "Web developer",
+        "company": "LogicLync",
+        "start_date": "Jun 2024",
+        "end_date": "Present"
+      }
+    ],
+    "certifications": [
+      {
+        "title": "Supervised Machine Learning: Regression and Classification",
+        "issuer": "DeepLearning.AI",
+        "date": "Apr 2024"
+      },
+      {
+        "title": "Linear Algebra for Machine Learning and Data Science",
+        "issuer": "DeepLearning.AI",
+        "date": "Apr 2024"
+      }
+    ],
+    "timestamp": "2025-07-19T13:42:46.852601",
+    "filename": "Nishant Jaiswal- Resume.pdf"
+  }
+]

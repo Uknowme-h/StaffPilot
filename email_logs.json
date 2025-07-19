@@ -1,0 +1,20 @@
+[
+  {
+    "timestamp": "2025-07-19T11:57:51.315030",
+    "recipient": "nishantjais541@gmail.com",
+    "reason": "can you send email to nishantjais541@gmail.com . reason :- leave approval accepted ",
+    "content": "Subject: Leave Request Approved\n\nDear Nishant,\n\nThis email confirms that your leave request has been approved.\n\nPlease refer to your original request for the dates and duration of your approved leave.\n\nIf you have any questions, please do not hesitate to contact us.\n\nBest regards,\nHR Team"
+  },
+  {
+    "timestamp": "2025-07-19T12:14:30.197367",
+    "recipient": "nishantjais541@gmail.com",
+    "subject": "Leave Request Approved",
+    "status": "SUCCESS"
+  },
+  {
+    "timestamp": "2025-07-19T12:14:30.199348",
+    "recipient": "nishantjais541@gmail.com",
+    "reason": "can you send email to nishantjais541@gmail.com . reason :- leave approval accepted ",
+    "content": "Subject: Leave Request Approved\n\nDear Nishant,\n\nThis email confirms that your recent leave request has been approved.\n\nYou may refer to the original leave request for the approved dates and details.\n\nPlease let us know if you have any questions.\n\nBest regards,\nHR Team - StaffPilot"
+  }
+]
