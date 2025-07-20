@@ -294,9 +294,13 @@ You can now ask me questions about this candidate or send emails to them!`,
     }
   };
 
+  // If jobs view is selected, render the JobsDashboard
+  if (currentView === "jobs") {
+    return <JobsDashboard />;
+  }
+
   return (
     <div className="flex flex-col min-h-screen bg-gray-50 dark:bg-gray-900">
-      {/* Header with navigation - always visible */}
       <header className="p-4 border-b border-gray-200 dark:border-gray-700 text-xl font-bold text-center bg-white dark:bg-gray-800 flex justify-between items-center">
         <div className="flex items-center space-x-4">
           <span>StaffPilot</span>
@@ -331,221 +335,201 @@ You can now ask me questions about this candidate or send emails to them!`,
           {chat.clearingMemory ? "Clearing..." : "Clear Chat"}
         </button>
       </header>
-
-      {/* Render content based on current view */}
-      {currentView === "jobs" ? (
-        <JobsDashboard />
-      ) : (
-        <main className="flex-1 overflow-y-auto px-2 py-4 sm:px-0 flex flex-col items-center pb-24">
-          <div className="w-full max-w-xl flex flex-col gap-4">
-            {allMessages.map((msg: Message, i: number) => (
+      <main className="flex-1 overflow-y-auto px-2 py-4 sm:px-0 flex flex-col items-center pb-24">
+        <div className="w-full max-w-xl flex flex-col gap-4">
+          {allMessages.map((msg: Message, i: number) => (
+            <div
+              key={msg.id || i}
+              className={`flex ${
+                msg.sender === "user" ? "justify-end" : "justify-start"
+              }`}
+            >
               <div
-                key={msg.id || i}
-                className={`flex ${
-                  msg.sender === "user" ? "justify-end" : "justify-start"
+                className={`px-4 py-2 rounded-lg max-w-[80%] text-sm shadow ${
+                  msg.sender === "user"
+                    ? "bg-blue-500 text-white"
+                    : "bg-gray-200 dark:bg-gray-700 dark:text-gray-100"
                 }`}
               >
-                <div
-                  className={`px-4 py-2 rounded-lg max-w-[80%] text-sm shadow ${
-                    msg.sender === "user"
-                      ? "bg-blue-500 text-white"
-                      : "bg-gray-200 dark:bg-gray-700 dark:text-gray-100"
-                  }`}
-                >
-                  {msg.sender === "bot" ? (
-                    <div className="prose prose-sm max-w-none dark:prose-invert">
-                      <ReactMarkdown
-                        components={{
-                          p: ({ children }) => (
-                            <p className="mb-2 last:mb-0">{children}</p>
-                          ),
-                          ul: ({ children }) => (
-                            <ul className="list-disc list-inside mb-2">
-                              {children}
-                            </ul>
-                          ),
-                          ol: ({ children }) => (
-                            <ol className="list-decimal list-inside mb-2">
-                              {children}
-                            </ol>
-                          ),
-                          li: ({ children }) => (
-                            <li className="mb-1">{children}</li>
-                          ),
-                          strong: ({ children }) => (
-                            <strong className="font-semibold">
-                              {children}
-                            </strong>
-                          ),
-                          em: ({ children }) => (
-                            <em className="italic">{children}</em>
-                          ),
-                          code: ({ children }) => (
-                            <code className="bg-gray-300 dark:bg-gray-600 px-1 py-0.5 rounded text-xs font-mono">
-                              {children}
-                            </code>
-                          ),
-                          pre: ({ children }) => (
-                            <pre className="bg-gray-300 dark:bg-gray-600 p-2 rounded overflow-x-auto text-xs font-mono mb-2">
-                              {children}
-                            </pre>
-                          ),
-                          h1: ({ children }) => (
-                            <h1 className="text-lg font-bold mb-2">
-                              {children}
-                            </h1>
-                          ),
-                          h2: ({ children }) => (
-                            <h2 className="text-base font-bold mb-2">
-                              {children}
-                            </h2>
-                          ),
-                          h3: ({ children }) => (
-                            <h3 className="text-sm font-bold mb-1">
-                              {children}
-                            </h3>
-                          ),
-                          blockquote: ({ children }) => (
-                            <blockquote className="border-l-4 border-gray-400 pl-3 italic mb-2">
-                              {children}
-                            </blockquote>
-                          ),
-                        }}
-                      >
-                        {msg.text}
-                      </ReactMarkdown>
-                    </div>
-                  ) : (
-                    <div className="whitespace-pre-wrap">{msg.text}</div>
-                  )}
-
-                  {/* Render table data if available */}
-                  {msg.table_data && (
-                    <TableComponent tableData={msg.table_data} />
-                  )}
-
-                  {/* Render suggested prompts if available */}
-                  {msg.suggested_prompts &&
-                    msg.suggested_prompts.length > 0 && (
-                      <SuggestedPrompts prompts={msg.suggested_prompts} />
-                    )}
-
-                  {msg.fileName && (
-                    <div className="mt-1 text-xs text-gray-600 dark:text-gray-300">
-                      📎 {msg.fileName}
-                    </div>
-                  )}
-                  {msg.action && (
-                    <div className="mt-1 text-xs text-green-600 dark:text-green-400">
-                      ⚡ Action: {msg.action}
-                    </div>
-                  )}
-                  <div className="mt-1 text-xs opacity-50">
-                    {new Date(msg.timestamp).toLocaleTimeString()}
+                {msg.sender === "bot" ? (
+                  <div className="prose prose-sm max-w-none dark:prose-invert">
+                    <ReactMarkdown
+                      components={{
+                        p: ({ children }) => (
+                          <p className="mb-2 last:mb-0">{children}</p>
+                        ),
+                        ul: ({ children }) => (
+                          <ul className="list-disc list-inside mb-2">
+                            {children}
+                          </ul>
+                        ),
+                        ol: ({ children }) => (
+                          <ol className="list-decimal list-inside mb-2">
+                            {children}
+                          </ol>
+                        ),
+                        li: ({ children }) => (
+                          <li className="mb-1">{children}</li>
+                        ),
+                        strong: ({ children }) => (
+                          <strong className="font-semibold">{children}</strong>
+                        ),
+                        em: ({ children }) => (
+                          <em className="italic">{children}</em>
+                        ),
+                        code: ({ children }) => (
+                          <code className="bg-gray-300 dark:bg-gray-600 px-1 py-0.5 rounded text-xs font-mono">
+                            {children}
+                          </code>
+                        ),
+                        pre: ({ children }) => (
+                          <pre className="bg-gray-300 dark:bg-gray-600 p-2 rounded overflow-x-auto text-xs font-mono mb-2">
+                            {children}
+                          </pre>
+                        ),
+                        h1: ({ children }) => (
+                          <h1 className="text-lg font-bold mb-2">{children}</h1>
+                        ),
+                        h2: ({ children }) => (
+                          <h2 className="text-base font-bold mb-2">
+                            {children}
+                          </h2>
+                        ),
+                        h3: ({ children }) => (
+                          <h3 className="text-sm font-bold mb-1">{children}</h3>
+                        ),
+                        blockquote: ({ children }) => (
+                          <blockquote className="border-l-4 border-gray-400 pl-3 italic mb-2">
+                            {children}
+                          </blockquote>
+                        ),
+                      }}
+                    >
+                      {msg.text}
+                    </ReactMarkdown>
                   </div>
+                ) : (
+                  <div className="whitespace-pre-wrap">{msg.text}</div>
+                )}
+
+                {/* Render table data if available */}
+                {msg.table_data && (
+                  <TableComponent tableData={msg.table_data} />
+                )}
+
+                {/* Render suggested prompts if available */}
+                {msg.suggested_prompts && msg.suggested_prompts.length > 0 && (
+                  <SuggestedPrompts prompts={msg.suggested_prompts} />
+                )}
+
+                {msg.fileName && (
+                  <div className="mt-1 text-xs text-gray-600 dark:text-gray-300">
+                    📎 {msg.fileName}
+                  </div>
+                )}
+                {msg.action && (
+                  <div className="mt-1 text-xs text-green-600 dark:text-green-400">
+                    ⚡ Action: {msg.action}
+                  </div>
+                )}
+                <div className="mt-1 text-xs opacity-50">
+                  {new Date(msg.timestamp).toLocaleTimeString()}
                 </div>
               </div>
-            ))}
+            </div>
+          ))}
 
-            {/* Loading indicators */}
-            {resumeParser.uploading && (
-              <div className="flex justify-start">
-                <div className="bg-gray-200 dark:bg-gray-700 px-4 py-2 rounded-lg text-sm">
-                  <div className="flex items-center gap-2">
-                    <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-blue-500"></div>
-                    Uploading and parsing resume...
-                  </div>
+          {/* Loading indicators */}
+          {resumeParser.uploading && (
+            <div className="flex justify-start">
+              <div className="bg-gray-200 dark:bg-gray-700 px-4 py-2 rounded-lg text-sm">
+                <div className="flex items-center gap-2">
+                  <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-blue-500"></div>
+                  Uploading and parsing resume...
                 </div>
               </div>
-            )}
+            </div>
+          )}
 
-            {chat.isLoading && (
-              <div className="flex justify-start">
-                <div className="bg-gray-200 dark:bg-gray-700 px-4 py-2 rounded-lg text-sm">
-                  <div className="flex items-center gap-2">
-                    <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-blue-500"></div>
-                    AI is thinking...
-                  </div>
+          {chat.isLoading && (
+            <div className="flex justify-start">
+              <div className="bg-gray-200 dark:bg-gray-700 px-4 py-2 rounded-lg text-sm">
+                <div className="flex items-center gap-2">
+                  <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-blue-500"></div>
+                  AI is thinking...
                 </div>
               </div>
-            )}
+            </div>
+          )}
 
-            <div ref={messagesEndRef} />
-          </div>
-        </main>
+          <div ref={messagesEndRef} />
+        </div>
+      </main>
+
+      {/* Error messages */}
+      {resumeParser.uploadError && (
+        <div className="fixed bottom-24 left-0 right-0 w-full max-w-4xl mx-auto px-4 py-2 bg-red-100 border border-red-400 text-red-700 rounded">
+          Upload Error: {resumeParser.uploadError}
+        </div>
       )}
 
-      {/* Error messages - only show for chat view */}
-      {currentView === "chat" && (
-        <>
-          {resumeParser.uploadError && (
-            <div className="fixed bottom-24 left-0 right-0 w-full max-w-4xl mx-auto px-4 py-2 bg-red-100 border border-red-400 text-red-700 rounded">
-              Upload Error: {resumeParser.uploadError}
-            </div>
-          )}
+      {chat.error && (
+        <div className="fixed bottom-24 left-0 right-0 w-full max-w-4xl mx-auto px-4 py-2 bg-red-100 border border-red-400 text-red-700 rounded">
+          Chat Error: {chat.error}
+        </div>
+      )}
 
-          {chat.error && (
-            <div className="fixed bottom-24 left-0 right-0 w-full max-w-4xl mx-auto px-4 py-2 bg-red-100 border border-red-400 text-red-700 rounded">
-              Chat Error: {chat.error}
-            </div>
-          )}
-
-          <form
-            onSubmit={sendMessage}
-            className="fixed bottom-0 left-0 right-0 w-full max-w-4xl mx-auto p-4 flex gap-2 bg-white dark:bg-gray-800 border-t border-gray-200 dark:border-gray-700"
-          >
+      <form
+        onSubmit={sendMessage}
+        className="fixed bottom-0 left-0 right-0 w-full max-w-4xl mx-auto p-4 flex gap-2 bg-white dark:bg-gray-800 border-t border-gray-200 dark:border-gray-700"
+      >
+        <button
+          type="button"
+          onClick={handleFileButtonClick}
+          className="bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-200 px-3 py-2 rounded-lg hover:bg-gray-300 dark:hover:bg-gray-600 transition"
+          title="Upload PDF resume"
+        >
+          📄
+        </button>
+        <input
+          ref={fileInputRef}
+          type="file"
+          className="hidden"
+          accept=".pdf"
+          onChange={handleFileChange}
+        />
+        <input
+          className="flex-1 rounded-lg border border-gray-300 dark:border-gray-600 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400 dark:bg-gray-900 dark:text-white"
+          type="text"
+          placeholder="Try: 'Match candidates for Manager', 'List jobs', 'Email john@email.com about interview'..."
+          value={input}
+          onChange={(e) => setInput(e.target.value)}
+          disabled={chat.isLoading || resumeParser.uploading}
+        />
+        <button
+          type="submit"
+          disabled={
+            (!input.trim() && !selectedFile) ||
+            chat.isLoading ||
+            resumeParser.uploading
+          }
+          className="bg-blue-500 text-white px-4 py-2 rounded-lg font-semibold hover:bg-blue-600 transition disabled:opacity-50 disabled:cursor-not-allowed"
+        >
+          {chat.isLoading || resumeParser.uploading ? "Processing..." : "Send"}
+        </button>
+      </form>
+      {selectedFile && (
+        <div className="fixed bottom-20 left-0 right-0 w-full max-w-4xl mx-auto px-4 pb-2 text-sm text-gray-700 dark:text-gray-200 bg-blue-50 dark:bg-blue-900 border border-blue-200 dark:border-blue-700 rounded">
+          <div className="flex items-center justify-between">
+            <span>📎 Ready to upload: {selectedFile.name}</span>
             <button
-              type="button"
-              onClick={handleFileButtonClick}
-              className="bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-200 px-3 py-2 rounded-lg hover:bg-gray-300 dark:hover:bg-gray-600 transition"
-              title="Upload PDF resume"
+              onClick={() => setSelectedFile(null)}
+              className="text-red-500 hover:text-red-700 ml-2"
             >
-              📄
+              ✕
             </button>
-            <input
-              ref={fileInputRef}
-              type="file"
-              className="hidden"
-              accept=".pdf"
-              onChange={handleFileChange}
-            />
-            <input
-              className="flex-1 rounded-lg border border-gray-300 dark:border-gray-600 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400 dark:bg-gray-900 dark:text-white"
-              type="text"
-              placeholder="Try: 'Match candidates for Manager', 'List jobs', 'Email john@email.com about interview'..."
-              value={input}
-              onChange={(e) => setInput(e.target.value)}
-              disabled={chat.isLoading || resumeParser.uploading}
-            />
-            <button
-              type="submit"
-              disabled={
-                (!input.trim() && !selectedFile) ||
-                chat.isLoading ||
-                resumeParser.uploading
-              }
-              className="bg-blue-500 text-white px-4 py-2 rounded-lg font-semibold hover:bg-blue-600 transition disabled:opacity-50 disabled:cursor-not-allowed"
-            >
-              {chat.isLoading || resumeParser.uploading
-                ? "Processing..."
-                : "Send"}
-            </button>
-          </form>
-
-          {selectedFile && (
-            <div className="fixed bottom-20 left-0 right-0 w-full max-w-4xl mx-auto px-4 pb-2 text-sm text-gray-700 dark:text-gray-200 bg-blue-50 dark:bg-blue-900 border border-blue-200 dark:border-blue-700 rounded">
-              <div className="flex items-center justify-between">
-                <span>📎 Ready to upload: {selectedFile.name}</span>
-                <button
-                  onClick={() => setSelectedFile(null)}
-                  className="text-red-500 hover:text-red-700 ml-2"
-                >
-                  ✕
-                </button>
-              </div>
-            </div>
-          )}
-        </>
+          </div>
+        </div>
       )}
     </div>
   );

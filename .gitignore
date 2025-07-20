@@ -1,4 +1,5 @@
 # Visual Studio Code settings
 .vscode/
 .venv/
-.env/
+
+*.env
