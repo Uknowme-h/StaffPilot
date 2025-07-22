@@ -148,5 +148,91 @@
     "recipient": "nishantjais541@gmail.com",
     "subject": "Leave Request Accepted",
     "status": "SUCCESS"
+  },
+  {
+    "timestamp": "2025-07-20T10:31:08.474858",
+    "recipient": "uuiz.mrev@ypzf.org",
+    "subject": "Exciting Opportunity at StaffPilot - Customer Experience Manager",
+    "status": "SUCCESS"
+  },
+  {
+    "timestamp": "2025-07-20T10:31:08.476854",
+    "type": "reach_out",
+    "candidate_name": "CIERRA M VASQUEZ",
+    "candidate_email": "uuiz.mrev@ypzf.org",
+    "job_title": "Customer Experience Manager",
+    "match_score": 6,
+    "subject": "Exciting Opportunity at StaffPilot - Customer Experience Manager",
+    "status": "sent"
+  },
+  {
+    "timestamp": "2025-07-20T10:37:14.597340",
+    "recipient": "uuiz.mrev@ypzf.org",
+    "subject": "Exciting Opportunity at StaffPilot - Customer Experience Manager",
+    "status": "SUCCESS"
+  },
+  {
+    "timestamp": "2025-07-20T10:37:14.600355",
+    "type": "reach_out",
+    "candidate_name": "CIERRA M VASQUEZ",
+    "candidate_email": "uuiz.mrev@ypzf.org",
+    "job_title": "Customer Experience Manager",
+    "match_score": 6,
+    "subject": "Exciting Opportunity at StaffPilot - Customer Experience Manager",
+    "status": "sent"
+  },
+  {
+    "timestamp": "2025-07-20T11:47:05.720222",
+    "recipient": "uuiz.mrev@ypzf.org",
+    "subject": "Exciting Opportunity at StaffPilot - Frontend Developer",
+    "status": "SUCCESS"
+  },
+  {
+    "timestamp": "2025-07-20T11:47:05.723223",
+    "type": "reach_out",
+    "candidate_name": "CIERRA M VASQUEZ",
+    "candidate_email": "uuiz.mrev@ypzf.org",
+    "job_title": "Frontend Developer",
+    "match_score": 62,
+    "subject": "Exciting Opportunity at StaffPilot - Frontend Developer",
+    "status": "sent"
+  },
+  {
+    "timestamp": "2025-07-20T14:02:34.707646",
+    "recipient": "Nishantjais541@gmail.com",
+    "subject": "Exciting Opportunity at StaffPilot - Junior Full Stack Developer",
+    "status": "SUCCESS"
+  },
+  {
+    "timestamp": "2025-07-20T14:02:34.736650",
+    "type": "reach_out",
+    "candidate_name": "NISHANT JAISWAL",
+    "candidate_email": "Nishantjais541@gmail.com",
+    "job_title": "Junior Full Stack Developer",
+    "match_score": 62,
+    "subject": "Exciting Opportunity at StaffPilot - Junior Full Stack Developer",
+    "status": "sent"
+  },
+  {
+    "timestamp": "2025-07-20T14:15:48.988558",
+    "recipient": "nishantjais541@gmail.com",
+    "subject": "StaffPilot - Application Update",
+    "status": "SUCCESS"
+  },
+  {
+    "timestamp": "2025-07-20T14:16:50.635911",
+    "recipient": "Nishantjais541@gmail.com",
+    "subject": "Exciting Opportunity at StaffPilot - Junior Full Stack Developer",
+    "status": "SUCCESS"
+  },
+  {
+    "timestamp": "2025-07-20T14:16:50.653911",
+    "type": "reach_out",
+    "candidate_name": "NISHANT JAISWAL",
+    "candidate_email": "Nishantjais541@gmail.com",
+    "job_title": "Junior Full Stack Developer",
+    "match_score": 62,
+    "subject": "Exciting Opportunity at StaffPilot - Junior Full Stack Developer",
+    "status": "sent"
   }
 ]

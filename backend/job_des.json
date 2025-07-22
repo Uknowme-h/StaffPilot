@@ -68,5 +68,25 @@
     "employmentType": "Full-Time",
     "status": "Closed",
     "createdDate": "2010-06-16T12:00:00"
+  },
+  {
+    "jobId": 2001,
+    "clientId": 6001,
+    "title": "Junior Full Stack Developer",
+    "description": "Seeking a Junior Full Stack Developer with experience in Node.js, Express.js, Python, Django, MongoDB, and MySQL. The ideal candidate will have hands-on experience with REST API development, Docker, Git, and JavaScript. Responsibilities include developing and maintaining web applications, collaborating with cross-functional teams, and participating in Agile development processes. Familiarity with HTML/CSS, GitHub, and Postman is a plus.",
+    "jobType": "Remote",
+    "employmentType": "Full-Time",
+    "status": "Open",
+    "createdDate": "2025-07-19T13:52:56"
+  },
+  {
+    "jobId": 2002,
+    "clientId": 6002,
+    "title": "Frontend Developer",
+    "description": "Seeking a Frontend Developer skilled in Angular, React, HTML, CSS, JavaScript, and version control systems such as Git. Responsibilities include building and maintaining user interfaces, collaborating with design and backend teams, and ensuring responsive, pixel-perfect web applications. Experience with modern frontend frameworks and best practices is required.",
+    "jobType": "Remote",
+    "employmentType": "Full-Time",
+    "status": "Open",
+    "createdDate": "2025-07-19T14:16:44"
   }
 ]

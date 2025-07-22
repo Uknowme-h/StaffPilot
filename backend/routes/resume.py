@@ -53,6 +53,15 @@ class NotificationRequest(BaseModel):
     hr_email: str
     candidate_name: Optional[str] = None
 
+# Pydantic model for reach out email request
+class ReachOutEmailRequest(BaseModel):
+    candidate_email: str
+    candidate_name: str
+    job_title: str
+    match_score: Optional[int] = None
+    matching_skills: Optional[list] = []
+    candidate_summary: Optional[str] = ""
+
 
 # Pydantic models for email tools
 class EmailGenerationInput(PydanticBaseModel):
@@ -697,6 +706,155 @@ async def upload_resume(file: UploadFile = File(...)):
         json.dump(existing_data, f, indent=2, ensure_ascii=False)
 
     return {"parsed_resume": parsed_json}
+
+
+@router.post("/send-reach-out-email")
+async def send_reach_out_email(request: ReachOutEmailRequest):
+    """Send a personalized reach out email to a candidate based on their profile and job match"""
+    try:
+        # Create a specialized prompt for reach out emails
+        reach_out_prompt = PromptTemplate(
+            input_variables=["candidate_name", "candidate_email", "job_title", "match_score", "matching_skills", "candidate_summary"],
+            template="""
+You are a professional recruiter writing a personalized reach out email to a potential candidate.
+
+Generate a professional and engaging reach out email with the following details:
+- Candidate Name: {candidate_name}
+- Candidate Email: {candidate_email}
+- Job Title: {job_title}
+- Matching Skills: {matching_skills}
+- Candidate Summary: {candidate_summary}
+
+Please generate a professional email with:
+1. A compelling subject line (start with "Subject: ")
+2. A personalized greeting using the candidate's name
+3. Brief introduction about StaffPilot and the opportunity
+4. Specific mention of their relevant skills and why they're a good fit
+5. Clear call to action for next steps
+6. Professional closing
+
+IMPORTANT INSTRUCTIONS:
+- Always use "StaffPilot" as the company name
+- Sign the email as "StaffPilot Talent Acquisition Team"
+- Use "careers@staffpilot.com" as contact email
+- Make the email personalized and engaging, not generic
+- Mention specific skills that match the role
+- Keep the tone professional but friendly and approachable
+- Focus on the opportunity and growth potential
+- DO NOT include placeholder text like [Your Name], [Your Job Title], or any [ ] brackets
+- DO NOT mention match scores or percentages
+- Keep the email concise and direct
+- Focus on why their skills are valuable for the specific role
+
+Example format:
+Subject: [Compelling subject about the opportunity]
+
+Hi [Candidate Name],
+
+I hope this email finds you well. I'm reaching out from StaffPilot's Talent Acquisition Team because we have an exciting [Job Title] opportunity that caught my attention when I reviewed your background.
+
+Your experience with [specific skills] particularly stood out to us, as these are exactly the capabilities we're looking for in this role. [Brief explanation of how their skills align with the position].
+
+At StaffPilot, [brief company value proposition]. This position offers [specific opportunity benefits].
+
+I'd love to schedule a brief conversation to discuss this opportunity and learn more about your career interests. Please feel free to reply to this email or reach out directly.
+
+Best regards,
+StaffPilot Talent Acquisition Team
+careers@staffpilot.com
+www.staffpilot.com
+
+Looking forward to hearing from you!
+"""
+        )
+
+        # Create the email generation chain
+        reach_out_chain = reach_out_prompt | llm_chat
+
+        # Prepare the skills list as a string
+        skills_str = ", ".join(request.matching_skills) if request.matching_skills else "your technical expertise"
+
+        # Generate the email content
+        response = reach_out_chain.invoke({
+            "candidate_name": request.candidate_name,
+            "candidate_email": request.candidate_email,
+            "job_title": request.job_title,
+            "matching_skills": skills_str,
+            "candidate_summary": request.candidate_summary or "your impressive background and experience"
+        })
+
+        # Parse the response
+        response_text = response.content if hasattr(response, 'content') else str(response)
+        lines = response_text.split('\n')
+        subject = f"Exciting Opportunity at StaffPilot - {request.job_title}"
+        body = response_text
+
+        # Extract subject line if present
+        for line in lines:
+            if line.strip().startswith('Subject:'):
+                subject = line.replace('Subject:', '').strip()
+                body = '\n'.join([l for l in lines if not l.strip().startswith('Subject:')])
+                break
+
+        # Send the email using the email service
+        success = email_service.send_professional_email(
+            recipient_email=request.candidate_email,
+            subject=subject,
+            body=body.strip(),
+            candidate_name=request.candidate_name
+        )
+
+        if success:
+            # Log the outreach email
+            log_entry = {
+                "timestamp": datetime.now().isoformat(),
+                "type": "reach_out",
+                "candidate_name": request.candidate_name,
+                "candidate_email": request.candidate_email,
+                "job_title": request.job_title,
+                "match_score": request.match_score,
+                "subject": subject,
+                "status": "sent"
+            }
+            
+            # Log to email logs
+            log_file = "email_logs.json"
+            logs = []
+            
+            if os.path.exists(log_file):
+                try:
+                    with open(log_file, 'r', encoding='utf-8') as f:
+                        logs = json.load(f)
+                except:
+                    logs = []
+            
+            logs.append(log_entry)
+            
+            with open(log_file, 'w', encoding='utf-8') as f:
+                json.dump(logs, f, indent=2, ensure_ascii=False)
+
+            return {
+                "message": f"Reach out email sent successfully to {request.candidate_name}",
+                "candidate_email": request.candidate_email,
+                "job_title": request.job_title,
+                "subject": subject,
+                "timestamp": datetime.now().isoformat(),
+                "status": "success"
+            }
+        else:
+            return {
+                "message": f"Failed to send reach out email to {request.candidate_name}",
+                "candidate_email": request.candidate_email,
+                "error": "SMTP delivery failed",
+                "status": "failed"
+            }
+
+    except Exception as e:
+        return {
+            "message": f"Error sending reach out email to {request.candidate_name}",
+            "error": str(e),
+            "status": "error"
+        }
 
 
 @router.post("/send-notification")

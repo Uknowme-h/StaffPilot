@@ -8,6 +8,7 @@ import {
   searchJobs,
   clearMatchResults,
   clearSearchResults,
+  sendReachOutEmail,
 } from "../../features/jobsSlice.js";
 
 export default function JobsDashboard() {
@@ -21,6 +22,7 @@ export default function JobsDashboard() {
   const [selectedEmploymentType, setSelectedEmploymentType] = useState("");
   const [matchJobTitle, setMatchJobTitle] = useState("");
   const [topCandidates, setTopCandidates] = useState(5);
+  const [sendingEmailTo, setSendingEmailTo] = useState<string | null>(null);
 
   useEffect(() => {
     // Load initial data
@@ -87,7 +89,10 @@ export default function JobsDashboard() {
       <div className="flex justify-between items-center text-xs text-gray-500 dark:text-gray-400">
         <span>ID: {job.jobId}</span>
         <button
-          onClick={() => setMatchJobTitle(job.title)}
+          onClick={() => {
+            setMatchJobTitle(job.title);
+            setActiveTab("match");
+          }}
           className="text-blue-600 dark:text-blue-400 hover:underline"
         >
           Match Candidates
@@ -165,6 +170,75 @@ export default function JobsDashboard() {
       <div className="bg-gray-50 dark:bg-gray-700 p-3 rounded text-sm">
         <strong>AI Summary:</strong>
         <p className="mt-1 text-gray-700 dark:text-gray-300">{match.summary}</p>
+      </div>
+
+      {/* Action Buttons */}
+      <div className="mt-4 flex gap-2">
+        <button
+          onClick={async () => {
+            try {
+              // Set loading state for this specific candidate
+              setSendingEmailTo(match.candidate_email);
+
+              const emailData = {
+                candidate_email: match.candidate_email,
+                candidate_name: match.candidate_name,
+                job_title: jobs.currentJobTitle || "Job Opening",
+                match_score: match.match_score,
+                matching_skills: match.matching_skills,
+                candidate_summary: match.summary,
+              };
+
+              const result = await dispatch(
+                sendReachOutEmail(emailData) as any
+              );
+
+              if (sendReachOutEmail.fulfilled.match(result)) {
+                // Show success message with email details
+                const emailResult = result.payload;
+                alert(
+                  `✅ Email sent successfully!\n\nTo: ${match.candidate_name}\nSubject: ${emailResult.subject}\n\nThe candidate will receive your personalized reach out email shortly.`
+                );
+              } else {
+                // Show error message
+                const errorMessage = result.payload || "Unknown error occurred";
+                alert(
+                  `❌ Failed to send email to ${match.candidate_name}.\n\nError: ${errorMessage}\n\nPlease check your email configuration and try again.`
+                );
+              }
+            } catch (error) {
+              alert(`❌ Error sending email: ${error}`);
+            } finally {
+              // Clear loading state
+              setSendingEmailTo(null);
+            }
+          }}
+          disabled={sendingEmailTo !== null}
+          className="flex-1 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors text-sm font-medium disabled:opacity-50 disabled:cursor-not-allowed"
+        >
+          {sendingEmailTo === match.candidate_email
+            ? "📧 Sending..."
+            : "📧 Send Reach Out Email"}
+        </button>
+        <button
+          onClick={() => {
+            // Copy candidate details to clipboard
+            const candidateInfo = `Candidate: ${match.candidate_name}\nEmail: ${
+              match.candidate_email
+            }\nMatch Score: ${
+              match.match_score
+            }%\nSkills: ${match.matching_skills.join(", ")}\nSummary: ${
+              match.summary
+            }`;
+            navigator.clipboard.writeText(candidateInfo).then(() => {
+              alert("Candidate details copied to clipboard!");
+            });
+          }}
+          className="px-4 py-2 bg-gray-600 text-white rounded-lg hover:bg-gray-700 transition-colors text-sm font-medium"
+          title="Copy candidate details"
+        >
+          📋
+        </button>
       </div>
     </div>
   );
@@ -367,6 +441,16 @@ export default function JobsDashboard() {
                 >
                   {jobs.isMatching ? "Matching..." : "Match Candidates"}
                 </button>
+              </div>
+              <div className="flex gap-2 mt-3">
+                {jobs.matchResults.length > 0 && (
+                  <button
+                    onClick={() => dispatch(clearMatchResults())}
+                    className="px-4 py-2 bg-gray-600 text-white rounded-lg hover:bg-gray-700"
+                  >
+                    Clear Results
+                  </button>
+                )}
               </div>
               {jobs.currentJobTitle && (
                 <p className="text-sm text-gray-600 dark:text-gray-300">

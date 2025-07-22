@@ -139,6 +139,39 @@ export const quickMatchCandidate = createAsyncThunk(
     }
 );
 
+// Send reach out email to candidate
+export const sendReachOutEmail = createAsyncThunk(
+    'jobs/sendReachOutEmail',
+    async ({ candidate_email, candidate_name, job_title, match_score, matching_skills, candidate_summary }, { rejectWithValue }) => {
+        try {
+            const response = await fetch('http://localhost:8000/api/resume/send-reach-out-email', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    candidate_email,
+                    candidate_name,
+                    job_title,
+                    match_score,
+                    matching_skills,
+                    candidate_summary
+                }),
+            });
+
+            if (!response.ok) {
+                const errorData = await response.json();
+                throw new Error(errorData.detail || 'Failed to send reach out email');
+            }
+
+            const data = await response.json();
+            return data;
+        } catch (error) {
+            return rejectWithValue(error.message);
+        }
+    }
+);
+
 // Initial state
 const initialState = {
     // Job matching
@@ -171,6 +204,11 @@ const initialState = {
     quickMatchResult: null,
     isQuickMatching: false,
     quickMatchError: null,
+
+    // Reach out emails
+    emailResults: [],
+    isSendingEmail: false,
+    emailError: null,
 };
 
 // Jobs slice
@@ -195,6 +233,10 @@ const jobsSlice = createSlice({
             state.quickMatchResult = null;
             state.quickMatchError = null;
         },
+        clearEmailResults: (state) => {
+            state.emailResults = [];
+            state.emailError = null;
+        },
         clearAllErrors: (state) => {
             state.matchError = null;
             state.jobsError = null;
@@ -202,6 +244,7 @@ const jobsSlice = createSlice({
             state.jobError = null;
             state.statsError = null;
             state.quickMatchError = null;
+            state.emailError = null;
         },
     },
     extraReducers: (builder) => {
@@ -301,6 +344,22 @@ const jobsSlice = createSlice({
                 state.isQuickMatching = false;
                 state.quickMatchError = action.payload;
             });
+
+        // Send reach out email
+        builder
+            .addCase(sendReachOutEmail.pending, (state) => {
+                state.isSendingEmail = true;
+                state.emailError = null;
+            })
+            .addCase(sendReachOutEmail.fulfilled, (state, action) => {
+                state.isSendingEmail = false;
+                state.emailResults.push(action.payload);
+                state.emailError = null;
+            })
+            .addCase(sendReachOutEmail.rejected, (state, action) => {
+                state.isSendingEmail = false;
+                state.emailError = action.payload;
+            });
     },
 });
 
@@ -310,6 +369,7 @@ export const {
     clearSearchResults,
     clearSelectedJob,
     clearQuickMatch,
+    clearEmailResults,
     clearAllErrors,
 } = jobsSlice.actions;
 
