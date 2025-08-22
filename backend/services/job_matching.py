@@ -19,11 +19,18 @@ class JobMatchingService:
 
     def _initialize_llm(self):
         """Initialize the LLM with proper configuration."""
-        return AzureChatOpenAI(
-            azure_deployment="gpt-4o",
-            api_version=os.getenv("AZURE_API_VERSION", "2024-02-15-preview"),
-            temperature=0.7
+        # return AzureChatOpenAI(
+        #     azure_deployment="gpt-4o",
+        #     api_version=os.getenv("AZURE_API_VERSION", "2024-02-15-preview"),
+        #     temperature=0.7
+        # )
+
+        return ChatGoogleGenerativeAI(
+            model="gemini-2.5-flash",
+            temperature=0.7,
+            google_api_key=os.getenv("GOOGLE_API_KEY")
         )
+    
 
     def _initialize_match_summary_chain(self):
         """Create an LLMChain for generating match summaries."""

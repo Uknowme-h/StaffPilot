@@ -249,5 +249,41 @@
     "certifications": [],
     "timestamp": "2025-07-20T14:03:20.063994",
     "filename": "ANTHONY_R_MCCLELLAND_32598.pdf"
+  },
+  {
+    "full_name": "CANDACE R ALEXANDER",
+    "email": "ouiq.hbrt@eqjof.org",
+    "phone_number": "7574152274",
+    "skills": [
+      "Animal Handle Injured",
+      "Feed Formula",
+      "Release Prep",
+      "Volunteer Guide"
+    ],
+    "education": [
+      {
+        "degree": "Certificate - CLERICAL OFFICE MGT",
+        "institution": "MIDWEST CAREER INST",
+        "start_date": null,
+        "end_date": null
+      },
+      {
+        "degree": "Other - NETWORKING",
+        "institution": "HENRY FORD COMMUNITY",
+        "start_date": null,
+        "end_date": null
+      }
+    ],
+    "work_experience": [
+      {
+        "position": "Wildlife Rehabilitator Assistant",
+        "company": "WildCare Nature Center",
+        "start_date": "Dec 2021",
+        "end_date": "Jan 2023"
+      }
+    ],
+    "certifications": [],
+    "timestamp": "2025-08-22T23:29:38.298040",
+    "filename": "CANDACE_R_ALEXANDER_32816.pdf"
   }
 ]

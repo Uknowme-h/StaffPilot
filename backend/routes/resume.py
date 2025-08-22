@@ -29,17 +29,17 @@ email_service = EmailService()
 job_service = JobMatchingService()
 
 # Initialize LLM and memory for conversation
-# llm_chat = ChatGoogleGenerativeAI(
-#     model="gemini-2.0-flash",
-#     google_api_key=os.getenv("GOOGLE_API_KEY"),
-#     temperature=0.7
-# )
-
-llm_chat = AzureChatOpenAI(
-    azure_deployment="gpt-4o",
-    api_version=os.getenv("AZURE_API_VERSION", "2024-02-15-preview"),
+llm_chat = ChatGoogleGenerativeAI(
+    model="gemini-2.5-flash",
+    google_api_key=os.getenv("GOOGLE_API_KEY"),
     temperature=0.7
 )
+
+# llm_chat = AzureChatOpenAI(
+#     azure_deployment="gpt-4o",
+#     api_version=os.getenv("AZURE_API_VERSION", "2024-02-15-preview"),
+#     temperature=0.7
+# )
 
 # Initialize memory for conversation
 conversation_memory = UpdatedConversationBufferMemory(memory_key="history", return_messages=True)
@@ -583,7 +583,9 @@ agent = initialize_agent(
     ],
     llm=llm_chat,
     agent="zero-shot-react-description",
-    memory=conversation_memory
+    memory=conversation_memory,
+    handle_parsing_errors=True,
+    verbose=True
 )
 
 @router.post("/chat")

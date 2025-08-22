@@ -6,9 +6,15 @@ from langchain_openai import AzureChatOpenAI
 
 load_dotenv()
 
-llm = AzureChatOpenAI (
-    azure_deployment="gpt-4o",
-    api_version=os.getenv("AZURE_API_VERSION", "2024-02-15-preview"),
+# llm = AzureChatOpenAI (
+#     azure_deployment="gpt-4o",
+#     api_version=os.getenv("AZURE_API_VERSION", "2024-02-15-preview"),
+#     temperature=0.7
+# )
+
+llm = ChatGoogleGenerativeAI(
+    model="gemini-2.0-flash",
+    google_api_key=os.getenv("GOOGLE_API_KEY"),
     temperature=0.7
 )
 
